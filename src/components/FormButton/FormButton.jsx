@@ -1,9 +1,14 @@
-import React from 'react';
+import React from "react";
+import classNames from "classnames";
+import "./FormButton.scss";
 
-import './FormButton.scss';
-
-export const FormButton = ({ children, ...otherProps }) => (
-    <button className='custom-button' {...otherProps}>
-      {children}
-    </button>
+export const FormButton = ({ children, isGoogleSignIn, ...otherProps }) => (
+  <button
+    className={classNames("custom-button", {
+      "google-sign-in": isGoogleSignIn
+    })}
+    {...otherProps}
+  >
+    {children}
+  </button>
 );
