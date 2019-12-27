@@ -1,20 +1,6 @@
 import React from "react";
-import classNames from "classnames";
-import "./FormButton.scss";
+import { CustomButtonContainer } from "./FormButton.style";
 
-export const FormButton = ({
-  children,
-  isGoogleSignIn,
-  inverted,
-  ...otherProps
-}) => (
-  <button
-    className={classNames("custom-button", {
-      "google-sign-in": isGoogleSignIn,
-      inverted
-    })}
-    {...otherProps}
-  >
-    {children}
-  </button>
+export const FormButton = ({ children, ...props }) => (
+  <CustomButtonContainer {...props}>{children}</CustomButtonContainer>
 );

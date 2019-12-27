@@ -1,7 +1,11 @@
 import React from "react";
 import FormInput from "../FormInput";
 import FormButton from "../FormButton";
-import "./SignIn.scss";
+import {
+  SignInContainer,
+  SignInTitle,
+  ButtonsBarContainer
+} from "./SignIn.style";
 import { auth, signInWithGoogle } from "../../firebase/utils";
 
 export class SignIn extends React.Component {
@@ -20,7 +24,7 @@ export class SignIn extends React.Component {
       await auth.createUserWithEmailAndPassword(email, password);
       this.setState({ email: "", password: "" });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -36,8 +40,8 @@ export class SignIn extends React.Component {
 
   render() {
     return (
-      <div className="sign-in">
-        <h2>I already have an account</h2>
+      <SignInContainer>
+        <SignInTitle>I already have an account</SignInTitle>
         <span>Sign in with your email and password</span>
 
         <form onSubmit={this.handleSubmit}>
@@ -57,12 +61,14 @@ export class SignIn extends React.Component {
             label="password"
             required
           />
-          <FormButton type="submit"> Sign in </FormButton>
-          <FormButton onClick={this.handleSignInWithGoogle} isGoogleSignIn>
-            Sign in with Google
-          </FormButton>
+          <ButtonsBarContainer>
+            <FormButton type="submit"> Sign in </FormButton>
+            <FormButton onClick={this.handleSignInWithGoogle} isGoogleSignIn>
+              Sign in with Google
+            </FormButton>
+          </ButtonsBarContainer>
         </form>
-      </div>
+      </SignInContainer>
     );
   }
 }
