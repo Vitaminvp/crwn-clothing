@@ -8,6 +8,11 @@ import {
 } from "../../firebase/utils";
 import { connect } from "react-redux";
 import { updateCollections } from "../../redux/shop/actions";
+import WithSpinner from "../../components/WithSpinner/WithSpinner";
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
+
 
 class PureShopPage extends React.Component {
   state = {
@@ -27,14 +32,23 @@ class PureShopPage extends React.Component {
 
   render() {
     const { match } = this.props;
+    const { loading } = this.state;
     return (
-      <div className="shop-page">
-        <Route exact path={`${match.path}`} component={CollectionOverview} />
-        <Route
-          path={`${match.path}/:collectionId`}
-          component={CollectionPage}
-        />
-      </div>
+        <div className='shop-page'>
+          <Route
+              exact
+              path={`${match.path}`}
+              render={props => (
+                  <CollectionsOverviewWithSpinner isLoading={loading} {...props} />
+              )}
+          />
+          <Route
+              path={`${match.path}/:collectionId`}
+              render={props => (
+                  <CollectionPageWithSpinner isLoading={loading} {...props} />
+              )}
+          />
+        </div>
     );
   }
 }

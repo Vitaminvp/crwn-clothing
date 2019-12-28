@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import CustomButton from "../FormButton";
 import CartItem from "../CartItem/CartItem";
 import { withRouter } from "react-router-dom";
 import {
