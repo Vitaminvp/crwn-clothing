@@ -24,7 +24,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { setCurrentUser, collectionsArray } = this.props;
+    const { setCurrentUser  } = this.props; //collectionsArray
     // addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})));
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
