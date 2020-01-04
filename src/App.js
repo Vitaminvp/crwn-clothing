@@ -6,13 +6,10 @@ import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/Shop";
 import Header from "./components/Header";
 import SignInAndUp from "./pages/SignInAndUp";
-import { auth, createUserProfileDocument } from "./firebase/utils";
-import { setCurrentUser } from "./redux/user/action";
 import { createStructuredSelector } from "reselect";
-import { selectCurrentUser } from "./redux/user/selectors";
 import Checkout from "./pages/CheckOut/Checkout";
-import { selectCollectionsForPreview } from "./redux/shop/selectors";
-// import { addCollectionAndDocuments } from "./firebase/utils";
+import { selectCurrentUser } from './redux/user/selectors';
+import { checkUserSession } from './redux/user/action';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,26 +21,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { setCurrentUser  } = this.props; //collectionsArray
-    // addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})));
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });
-        });
-      } else {
-        setCurrentUser(userAuth);
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
+    const { checkUserSession } = this.props;
+    checkUserSession();
   }
 
   render() {
@@ -68,16 +47,16 @@ class App extends React.Component {
   }
 }
 
+
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-  collectionsArray: selectCollectionsForPreview
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  checkUserSession: () => dispatch(checkUserSession())
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(App);

@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import FormInput from "../FormInput";
 import FormButton from "../FormButton";
 import {
@@ -6,11 +7,12 @@ import {
   SignInTitle,
   ButtonsBarContainer
 } from "./SignIn.style";
-import { auth, signInWithGoogle } from "../../firebase/utils";
+import { googleSignInStart, emailSignInStart } from "../../redux/user/action";
 
-export class SignIn extends React.Component {
+export class PureSignIn extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       email: "",
       password: ""
@@ -19,26 +21,24 @@ export class SignIn extends React.Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+    const { emailSignInStart } = this.props;
     const { email, password } = this.state;
-    try {
-      await auth.createUserWithEmailAndPassword(email, password);
-      this.setState({ email: "", password: "" });
-    } catch (error) {
-      console.log(error);
-    }
+
+    emailSignInStart(email, password);
+    this.setState({
+      email: "",
+      password: ""
+    })
   };
 
   handleChange = event => {
     const { value, name } = event.target;
+
     this.setState({ [name]: value });
   };
 
-  handleSignInWithGoogle = e => {
-    e.preventDefault();
-    return signInWithGoogle();
-  };
-
   render() {
+    const { googleSignInStart } = this.props;
     return (
       <SignInContainer>
         <SignInTitle>I already have an account</SignInTitle>
@@ -63,7 +63,11 @@ export class SignIn extends React.Component {
           />
           <ButtonsBarContainer>
             <FormButton type="submit"> Sign in </FormButton>
-            <FormButton onClick={this.handleSignInWithGoogle} isGoogleSignIn>
+            <FormButton
+              type="button"
+              onClick={googleSignInStart}
+              isGoogleSignIn
+            >
               Sign in with Google
             </FormButton>
           </ButtonsBarContainer>
@@ -72,3 +76,13 @@ export class SignIn extends React.Component {
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  googleSignInStart: () => dispatch(googleSignInStart()),
+  emailSignInStart: (email, password) =>
+    dispatch(emailSignInStart({ email, password }))
+});
+
+export const SignIn = connect(
+  null,
+  mapDispatchToProps
+)(PureSignIn);
