@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import FormButton from '../FormButton';
+import styled from "styled-components";
+import FormButton from "../FormButton";
 
 export const CartDropdownContainer = styled.div`
   position: absolute;
